@@ -8,14 +8,14 @@ const FINAL_POSITION_BOTTOM_VAL = 'calc(400px)';
 function timeToPositionPercent(startTime) {
   const now = Date.now();
   const timeDiff = now - startTime;
-
+  
   if (timeDiff >= MS_TO_TAKEOFF) { return FINAL_POSITION_BOTTOM_VAL; }
 
   return `calc(300px + ${((timeDiff / MS_TO_TAKEOFF) * 100).toFixed(0)}%)`;
 }
 
 function generateEmptyListEls(quantity) {
-  return [...Array(quantity)].map(() => <li />);
+  return [...Array(quantity)].map((q, index) => <li key={index} />);
 }
 
 export default function RocketCore({ initialLaunchTime }) {

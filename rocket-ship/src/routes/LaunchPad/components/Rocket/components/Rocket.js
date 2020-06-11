@@ -1,9 +1,15 @@
 import React, { useState, Component } from 'react';
 import RocketCore from './RocketCore';
 
-export function FunctionalRocket() {
-  const [initialLaunchTime] = useState(Date.now());
-
+export function FunctionalRocket({start}) {
+  const [initialLaunchTime, setInitialLaunchTime] = useState(Date.now());
+  
+  React.useLayoutEffect(() => {
+    if(start) {
+      setInitialLaunchTime(Date.now());
+    }
+  }, [start])
+  
   return <RocketCore initialLaunchTime={initialLaunchTime} />;
 }
 
