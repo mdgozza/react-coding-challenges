@@ -3,15 +3,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
 import '../styles/_app.scss';
 
-import { ThemeContext, ThemeDispatcher } from '../../../ThemeProvider'
+import { ThemeContext } from '../../../ThemeProvider'
 import { lightTheme, darkTheme } from '../Theme'
 
 function App() {
   
   const [isDarkTheme, setDarkTheme] = React.useState(false)
   
-  const theme = React.useContext(ThemeContext)
-  const setTheme = React.useContext(ThemeDispatcher)
+  const [theme, setTheme] = React.useContext(ThemeContext)
 
   function handleThemeChange() {
     const root = document.documentElement
