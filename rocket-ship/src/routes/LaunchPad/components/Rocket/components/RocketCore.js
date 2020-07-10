@@ -5,23 +5,32 @@ const SECONDS_TO_TAKEOFF = 5;
 const MS_TO_TAKEOFF = SECONDS_TO_TAKEOFF * 1000;
 const FINAL_POSITION_BOTTOM_VAL = 'calc(400px)';
 
-function timeToPositionPercent(startTime) {
-  const now = Date.now();
-  const timeDiff = now - startTime;
-
+function timeToPositionPercent(startTime, timeDiff) {
+  // const now = Date.now();
+  // const timeDiff = now - startTime;
   if (timeDiff >= MS_TO_TAKEOFF) { return FINAL_POSITION_BOTTOM_VAL; }
 
   return `calc(300px + ${((timeDiff / MS_TO_TAKEOFF) * 100).toFixed(0)}%)`;
 }
 
 function generateEmptyListEls(quantity) {
-  return [...Array(quantity)].map(() => <li />);
+  return [...Array(quantity)].map((d, i) => <li key={i} />);
 }
 
-export default function RocketCore({ initialLaunchTime }) {
+export default function RocketCore({ initialLaunchTime, launch }) {
+
+  const [timeDiff, setTimeDiff] = React.useState(0);
+  if (launch && timeDiff < 5000) {
+    setTimeout(() => { setTimeDiff(timeDiff + 500)}, 500);
+  }
+  
+  React.useEffect(() => {
+    setTimeDiff(0)
+  }, [launch])
+
   return (
     <>
-      <div className="rocket" style={{ bottom: timeToPositionPercent(initialLaunchTime) }}>
+      <div className="rocket" style={{ bottom: timeToPositionPercent(initialLaunchTime, timeDiff) }}>
         <div className="rocket__body">
           <div className="rocket__body__main"/>
           <div className="rocket__body__fin rocket__body__fin__left"/>

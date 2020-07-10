@@ -1,13 +1,10 @@
-import React, { useState } from 'react';
+import React  from 'react';
 import '../styles/_launchpad.scss';
 
-export default function LaunchPad({Rocket}) {
-  const [rerenderCount, triggerRerender] = useState(0);
-  setTimeout(() => { triggerRerender(rerenderCount + 1); }, 500);
-
+export default function LaunchPad({Rocket, launch}) {
   return (
     <div className="launchpad">
-      <Rocket />
+      <Rocket launch={launch} />
     </div>
   );
 }
