@@ -1,9 +1,31 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMoon } from '@fortawesome/free-solid-svg-icons';
+import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
 import '../styles/_app.scss';
 
+import { ThemeContext, ThemeDispatcher } from '../../../ThemeProvider'
+import { lightTheme, darkTheme } from '../Theme'
+
 function App() {
+  
+  const [isDarkTheme, setDarkTheme] = React.useState(false)
+  
+  const theme = React.useContext(ThemeContext)
+  const setTheme = React.useContext(ThemeDispatcher)
+
+  function handleThemeChange() {
+    const root = document.getElementsByTagName( 'html' )[0]
+    if (!isDarkTheme) {
+      setDarkTheme(true);
+      setTheme(darkTheme);
+      root.setAttribute('class', 'dark-mode')
+    } else {
+      setDarkTheme(false);
+      setTheme(lightTheme);
+      root.removeAttribute('class', 'dark-mode')
+    }
+  }
+
   return (
     <div className="app">
       <div className="level">
@@ -13,7 +35,11 @@ function App() {
 
         {/* --The button that should toggle dark mode-- */}
         <button className="app__dark-mode-btn icon level-right">
-          <FontAwesomeIcon icon={faMoon} />
+          <FontAwesomeIcon 
+            icon={theme.icon === 'faSun' ? faSun : faMoon} 
+            color={theme.iconColor} 
+            onClick={handleThemeChange} 
+          />
         </button>
 
       </div>
