@@ -14,7 +14,7 @@ function App() {
   const setTheme = React.useContext(ThemeDispatcher)
 
   function handleThemeChange() {
-    const root = document.getElementsByTagName( 'html' )[0]
+    const root = document.documentElement
     if (!isDarkTheme) {
       setDarkTheme(true);
       setTheme(darkTheme);
