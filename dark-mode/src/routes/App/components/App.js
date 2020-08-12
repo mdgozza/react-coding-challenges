@@ -1,17 +1,13 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
 import "../styles/_app.scss";
-
+import { ModeContext } from "../../../contexts/ModeContext";
 function App() {
-  const [mode, setMode] = useState("light");
-
-  const toggleMode = () => {
-    mode === "light" ? setMode("dark") : setMode("light");
-  };
+  const [darkMode, setDarkMode] = useContext(ModeContext);
 
   return (
-    <div className={`app ${mode === "dark" && "dark-mode"}`}>
+    <div className="app">
       <div className="level">
         <div>
           <h1 className="title">Dark Mode Challenge</h1>
@@ -19,12 +15,14 @@ function App() {
 
         {/* --The button that should toggle dark mode-- */}
         <button
-          onClick={toggleMode}
+          onClick={() => {
+            setDarkMode(!darkMode);
+          }}
           className="app__dark-mode-btn icon level-right"
         >
           <FontAwesomeIcon
-            color={mode === "dark" ? "#FFA500" : "#000000"}
-            icon={mode === "dark" ? faSun : faMoon}
+            color={darkMode ? "#FFA500" : "#000000"}
+            icon={darkMode ? faSun : faMoon}
           />
         </button>
       </div>

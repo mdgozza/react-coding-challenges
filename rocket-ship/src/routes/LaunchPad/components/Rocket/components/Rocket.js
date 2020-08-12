@@ -1,26 +1,55 @@
-import React, { useState, Component } from "react";
+import React, { useState, Component, useContext, useEffect } from "react";
 import RocketCore from "./RocketCore";
+import { RocketContext } from "../../../RocketContext";
 
 export function FunctionalRocket() {
-  const [initialLaunchTime, setInitialLaunchTime] = useState("");
+  const [launch, setLaunch] = useContext(RocketContext);
+  const [initialLaunchTime, setInitialLaunchTime] = useState(0);
+
+  useEffect(() => {
+    launch ? setInitialLaunchTime(Date.now()) : setInitialLaunchTime(0);
+
+    return () => {
+      if (launch) {
+        setLaunch(false);
+        setInitialLaunchTime(0);
+      }
+    };
+  }, [launch, setLaunch]);
 
   return (
     <>
       <RocketCore initialLaunchTime={initialLaunchTime} />
-      <button onClick={(e) => setInitialLaunchTime(Date.now())}>
-        launch Rocket
-      </button>
     </>
   );
 }
 
 export class ClassRocket extends Component {
+  static contextType = RocketContext;
   constructor() {
     super();
 
-    this.state = {
-      initialLaunchTime: "",
-    };
+    this.state = { initialLaunchTime: 0, launch: false };
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const [launch] = this.context;
+    if (prevState.launch !== launch && launch) {
+      this.setState({
+        initialLaunchTime: Date.now(),
+        launch: this.context[0],
+      });
+    }
+
+    if (prevState.launch !== launch && !launch) {
+      this.setState({ initialLaunchTime: 0, launch: launch });
+    }
+  }
+
+  componentWillUnmount() {
+    const [launch, setLaunch] = this.context;
+    setLaunch(false);
+    this.setState({ initialLaunchTime: 0 });
   }
 
   render() {
@@ -29,11 +58,6 @@ export class ClassRocket extends Component {
     return (
       <>
         <RocketCore initialLaunchTime={initialLaunchTime} />
-        <button
-          onClick={(e) => this.setState({ initialLaunchTime: Date.now() })}
-        >
-          launch Rocket
-        </button>
       </>
     );
   }
